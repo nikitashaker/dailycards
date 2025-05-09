@@ -21,11 +21,12 @@ type Server struct {
 	secret string
 }
 
-// New создаёт echo.Echo, подключает session‑middleware и возвращает Server
 func New(q *db.Queries, secret string) *Server {
-	e := echo.New()
+	return &Server{srv: echo.New(), db: q, secret: secret}
+}
 
-	store := sessions.NewCookieStore([]byte("mysecretkey"))
+func (s *Server) Setup() {
+	store := sessions.NewCookieStore([]byte(s.secret))
 	store.Options = &sessions.Options{
 		Path:     "/",
 		HttpOnly: true,
@@ -33,22 +34,21 @@ func New(q *db.Queries, secret string) *Server {
 		SameSite: http.SameSiteLaxMode, // используем Lax
 		Secure:   false,                // **важно** на HTTP
 	}
-	e.Use(echoSession.Middleware(store))
-
-	return &Server{srv: e, db: q, secret: secret}
-}
-
-// Setup подключает CORS, логгер, recovery, renderer и регистрирует маршруты
-func (s *Server) Setup() {
+	s.srv.Use(echoSession.Middleware(store))
+	
 	s.srv.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:8080"},
 		AllowMethods:     []string{echo.GET, echo.POST, echo.DELETE},
 		AllowHeaders:     []string{echo.HeaderContentType},
 		AllowCredentials: true,
 	}))
 
 	s.srv.Use(middleware.Logger(), middleware.Recover())
-	s.srv.Renderer = NewTemplate("web/templates")
+
+	s.srv.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		HTML5:      true,
+		Root:       "web",
+	}))
 
 	api := s.srv.Group("/api")
 	api.POST("/users", s.CreateUser)

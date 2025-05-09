@@ -7,9 +7,8 @@
 ```bash
 docker compose down
 sqlc generate
+npm run build --prefix web
 docker compose up --build -d
-npm run build --prefix web/frontend
-npm run dev --prefix web/frontend
 ```
 
 ### logs
