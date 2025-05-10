@@ -36,8 +36,9 @@
           <Play class="size-[1.2em]" />
         </button>
 
-        <!-- 2. Edit -->
+        <!-- 2. Edit (теперь скрывается, если item.noEdit) -->
         <button
+          v-if="!item.noEdit"
           class="btn btn-square btn-ghost"
           @click="onEdit(item)"
           aria-label="Редактировать"
@@ -45,7 +46,7 @@
           <Pencil class="size-[1.2em]" />
         </button>
 
-        <!-- 3. Delete -->
+        <!-- 3. Delete всегда показываем -->
         <button
           class="btn btn-square btn-ghost"
           @click="onDelete(item)"
