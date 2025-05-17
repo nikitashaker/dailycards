@@ -1,4 +1,3 @@
-<!-- File: src/pages/EditPack.vue -->
 <template>
   <div>
     <Navbar />

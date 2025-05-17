@@ -1,4 +1,3 @@
-<!-- File: src/pages/TrainPack.vue -->
 <template>
   <div v-if="loaded && cards.length" class="max-w-xl mx-auto flex flex-col gap-6">
     <!-- Заголовок -->
@@ -66,7 +65,6 @@
       <h3 class="text-xl font-bold mb-4 text-success" v-if="incorrectCount === 0">
         🎉 Вы изучили все карточки без ошибок!
       </h3>
-      <!-- Если были ошибки, показываем статистику -->
       <div v-else>
         <h3 class="text-xl font-bold mb-4">Статистика повторения</h3>
         <p class="mb-2">Правильных ответов: <strong>{{ correctCount }}</strong></p>
@@ -87,11 +85,9 @@ const route  = useRoute()
 const router = useRouter()
 const packId = route.params.id
 
-// 3.1 State карточек
 const cards  = ref([])
 const loaded = ref(false)
 
-// 3.2 State викторины
 const index          = ref(0)
 const userAnswer     = ref('')
 const correct        = ref(false)
@@ -99,18 +95,14 @@ const score          = ref(0)
 const correctCount   = ref(0)
 const incorrectCount = ref(0)
 
-// Сбор ответов для отправки
 const sessionStats = []
 
-// Refs для модалок
 const resultDialog = ref(null)
 const finalDialog  = ref(null)
 
-// Computed
 const currentCard = computed(() => cards.value[index.value] || {})
 const isLast      = computed(() => index.value >= cards.value.length - 1)
 
-// 3.1 Загрузка карт для повторения
 async function loadCards() {
   try {
     const res  = await fetch(`/api/packs/${packId}/repeat`, { credentials: 'include' })
@@ -129,7 +121,6 @@ async function loadCards() {
   }
 }
 
-// 3.2 Проверка ответа
 function submitAnswer() {
   if (!userAnswer.value.trim()) return
 
@@ -153,7 +144,6 @@ function submitAnswer() {
   resultDialog.value.showModal()
 }
 
-// 3.3 + 3.4 Переход к next / отправка результатов
 async function nextCard() {
   resultDialog.value.close()
 
@@ -170,7 +160,6 @@ async function nextCard() {
   }
 }
 
-// Закрыть финал и домой
 function closeAndHome() {
   finalDialog.value.close()
   router.push('/')

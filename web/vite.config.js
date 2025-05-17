@@ -18,12 +18,11 @@ export default defineConfig({
     },
   },
 
-  // ────────────────────────────────────────────────
-  // Добавлено: прокси‑сервер для запросов /api → :8080
+
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // ваш Go‑бэкенд
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },

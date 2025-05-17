@@ -1,4 +1,3 @@
-<!-- File: src/pages/Stats.vue -->
 <template>
   <div class="max-w-2xl p-6">
     <h1 class="text-3xl font-bold mb-6 text-left">Статистика пользователя</h1>
@@ -68,7 +67,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* опционально, например, чтобы убрать padding слева */
 div {
   margin-left: 0;
 }

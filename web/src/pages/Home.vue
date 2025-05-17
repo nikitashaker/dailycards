@@ -1,4 +1,3 @@
-<!-- File: src/pages/Home.vue -->
 <template>
   <div>
     <Navbar />
